@@ -1,0 +1,35 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific functions
+function normalize_path {
+    path=$1
+    echo ${path} | tr ':' '\n' | grep -v "^$" | awk '{print NR, $1}' | \
+         sort -k2 | uniq -f1 | sort -n -k1 | awk '{print $2}' | \
+         tr '\n' ':'
+}
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# Set prompt line
+norm_clr="\[\e[0m\]"
+red_clr="\[\e[1;31m\]"
+green_clr="\[\e[1;32m\]"
+export PS1="${red_clr}cwd: ${green_clr}\w\n${norm_clr}[\u@\s (bg:\j)]${red_clr}$: ${norm_clr}"
+
+#Alias
+alias setup_nodejs="source ~zyuan/bin/setup_nodejs"
+alias setup_py="source ~zyuan/virtual-env1/bin/activate"
+
+#setup new version of vim
+local_install=/home/zyuan/software/install
+vim74_path=$local_install/vim-7.4
+postgresql96_path=$local_install/postgresql-9.6.2
+PATH=$vim74_path/bin:$postgresql96_path/bin:$PATH
+LD_LIBRARY_PATH=postgresql96_path/lib:$LD_LIBRARY_PATH
+
